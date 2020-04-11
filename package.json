@@ -1,0 +1,19 @@
+{
+  "name": "disclyssia",
+  "version": "1.0.0",
+  "description": "A personal JavaScript Discord library made for my bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sworder71",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "events": "^3.1.0",
+    "form-data": "^3.0.0",
+    "ws": "^7.2.3",
+    "zlib": "^1.0.5",
+    "zlib-sync": "^0.1.6"
+  }
+}
