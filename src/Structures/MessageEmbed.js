@@ -1,6 +1,6 @@
 'use strict';
 
-class EmbedBuilder {
+module.exports = class EmbedBuilder {
     /**
      * @constructor
      */
@@ -146,6 +146,4 @@ class EmbedBuilder {
         });
         return this;
     }
-}
-
-module.exports = EmbedBuilder;
+};

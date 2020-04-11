@@ -3,6 +3,7 @@
 const Endpoints = require('./Gateway/Endpoints');
 const WebSocket = require('./Gateway/WebSocket');
 const Payloads = require('./Gateway/Payloads');
+const APIRequest = require('./Rest/APIRequest');
 
 const { EventEmitter } = require('events');
 const axios = require('axios');
@@ -17,10 +18,9 @@ module.exports = class Client extends EventEmitter {
         super();
         this.token = token;
         this.ws = new WebSocket(this);
-        this.user = null;
-
+        this._APIRequest = new APIRequest(this);
+        /* Declare client events */
         this.ws.on('ready', (user) => {
-            this.user = user;
             this.emit('ready', this);
         });
         this.ws.on('message', (message) => this.emit('message', message));
@@ -45,7 +45,7 @@ module.exports = class Client extends EventEmitter {
     /**
      * Changes the client presence
      * @param data
-     * @returns {Promise<unknown>} Void promise
+     * @returns {Promise<void>} Void promise
      */
     setPresence(data) {
         return new Promise((resolve, reject) => {
@@ -58,10 +58,70 @@ module.exports = class Client extends EventEmitter {
     }
 
     /**
+     * Get client information
+     * @returns {Promise<Object>} Returns a promise object of the client user
+     */
+    getSelf() {
+        return this._APIRequest.make('get', Endpoints.USER('@me'));
+    }
+
+    /**
+     * Updates information of the client
+     * @param data
+     * @returns {Promise<Object>}
+     */
+    updateSelf(data = {}) {
+        return this._APIRequest.make('patch', Endpoints.USER('@me'), data);
+    }
+
+    /**
+     * Get a specified user
+     * @param userId
+     * @returns {Promise<Object>} Returns a promise object of a specified user
+     */
+    getUser(userId) {
+        return this._APIRequest.make('get', Endpoints.USER(userId));
+    }
+
+    /**
+     * Get all guilds where the client is
+     * @returns {Promise<Object>} Returns a promise object of the client guilds
+     */
+    getGuilds() {
+        return this._APIRequest.make('get', Endpoints.GUILDS('@me'));
+    }
+
+    /**
+     * Get a specified guild
+     * @param guildId
+     * @returns {Promise<Object>} Returns a promise object of a specified guild
+     */
+    getGuild(guildId) {
+        return this._APIRequest.make('get', Endpoints.GUILD(guildId));
+    }
+
+    /**
+     * Get all channels where the client has an access to read
+     * @returns {Promise<Object>} Returns a promise object of the client channels
+     */
+    getChannels() {
+        return this._APIRequest.make('get', Endpoints.CHANNELS('@me'));
+    }
+
+    /**
+     * Get a specified channel
+     * @param channelId
+     * @returns {Promise<Object>} Returns a promise object of the client user
+     */
+    getChannel(channelId) {
+        return this._APIRequest.make('get', Endpoints.CHANNEL(channelId));
+    }
+
+    /**
      * Create a message to a text channel
      * @param channelId
      * @param data
-     * @returns {Promise<unknown>} Returns the message sent to Discord
+     * @returns {Promise<Object>} Returns the message sent to Discord
      */
     sendMessage(channelId, data) {
         return new Promise((resolve, reject) => {

@@ -1,3 +1,6 @@
+'use strict';
+
+module.exports.API_VERSION = 7;
 module.exports.GATEWAY_VERSION = 6;
 module.exports.GATEWAY_ERRORS = {
     0:      'Gateway Error',
