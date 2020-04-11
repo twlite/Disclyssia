@@ -71,7 +71,7 @@ module.exports = class Client extends EventEmitter {
      * @returns {Promise<Object>}
      */
     updateSelf(data = {}) {
-        return this._APIRequest.make('patch', Endpoints.USER('@me'), data);
+        return this._APIRequest.make('patch', Endpoints.USER('@me'), { data });
     }
 
     /**
